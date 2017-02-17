@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>morse - showcase 01</title>
+  <meta charset=utf-8 />
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+  <!-- <link rel='stylesheet' href='../assets/uikit/uikit.css' /> -->
+  <script src='../assets/uikit/jquery-3.1.1.js'></script>
+  <!-- <script src='../assets/uikit/uikit.js'></script> -->
+  <script src='../assets/cytoscape/cytoscape.js'></script>
+</head>
+
+<style>
+  #cy {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 26px;
+    z-index: 999;
+    background-color: #FDF6E3;
+  }
+  #footer {
+   position:fixed;
+   left:0px;
+   bottom:0px;
+   height:26px;
+   width:100%;
+   background:#586E75;
+  }
+  #footer .footer-toolbar {
+    padding: 5px;
+    text-align: center;
+  }
+  button {
+    background-color: #FDF6E3;
+    border-radius: 4px;
+    border-style: none;
+  }
+</style>
+
+<body>
+
+  <div id='cy'></div>
+  <div id='footer'>
+    <div class="footer-toolbar">
+      <button class="button-1 uk-button uk-button-default uk-button-small">b 1</button>
+      <button class="uk-button uk-button-default uk-button-small">b 2</button>
+    </div>
+  </div>
+
+  <script>
+
+    var cy = cytoscape({
+      container: document.getElementById('cy'),
+
+      // layout: { name: 'grid', cols: 30 },
+      layout: { name: 'preset', padding: 5 },
+
+      style: [
+
+        {
+          selector: 'node',
+          style: {
+            'height': 30,
+            'width': 30,
+            'text-valign': 'bottom',
+            'text-halign': 'center',
+            'text-margin-y': '6px',
+            'text-outline-width': 2,
+            'text-outline-color': '#888',
+            'background-color': '#586E75',
+            'color': '#FFF',
+            'label': 'data(label)',
+            'font-size': '13px'
+          }
+        },
+        {
+          selector: 'edge',
+          style: {
+            'target-arrow-shape': 'triangle'
+          }
+        },
+        {
+          selector: 'edge.bezier',
+          style: {
+            'curve-style': 'bezier',
+            'control-point-step-size': 40
+          }
+        },
+        {
+          selector: 'edge.unbundled-bezier1',
+          style: {
+            'curve-style': 'unbundled-bezier',
+            'control-point-distances': 20,
+            'control-point-weights': 0.5
+          }
+        },
+        {
+          selector: 'edge.unbundled-bezier2',
+          style: {
+            'curve-style': 'unbundled-bezier',
+            'control-point-distances': -20,
+            'control-point-weights': 0.5
+          }
+        }
+
+      ],
+
+      elements: [
+
+        { data: { id: 'ws', label: 'HTTP INTER' }, position: { x: 174, y: 284 } },
+        { data: { id: 'ibk1', label: 'IBK 1' },    position: { x: 355, y: 231 } },
+        { data: { id: 'ibk2', label: 'IBK 2' },    position: { x: 355, y: 322 } },
+        { data: { id: 'ws-ibk1', source: 'ws', target: 'ibk1' }, classes: 'unbundled-bezier2' },
+        { data: { id: 'ws-ibk2', source: 'ws', target: 'ibk2' }, classes: 'unbundled-bezier1' },
+      ]
+    });
+
+    // events
+
+    cy.on('free', function(evt) { console.log('free evt:', evt.cyTarget.position()); });
+
+  </script>
+
+</body>
+
+</html>
