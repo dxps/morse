@@ -56,7 +56,7 @@
       container: document.getElementById('cy'),
 
       // layout: { name: 'grid', cols: 30 },
-      layout: { name: 'preset', padding: 5 },
+      layout: { name: 'preset', padding: 20 },
 
       style: [
 
@@ -68,18 +68,99 @@
             'text-valign': 'bottom',
             'text-halign': 'center',
             'text-margin-y': '6px',
-            'text-outline-width': 2,
-            'text-outline-color': '#888',
-            'background-color': '#586E75',
+            'text-outline-width': 1,
+            'text-outline-color': '#586E75',
+            'background-color': '#839496',
             'color': '#FFF',
             'label': 'data(label)',
-            'font-size': '13px'
+            'font-size': '12px'
+          }
+        },
+        {
+          selector: 'node.warning',
+          style: {
+            'background-color': '#B58900'
+          }
+        },
+        {
+          selector: 'node.blue',
+          style: {
+            'background-color': '#268BD2'
+          }
+        },
+        {
+          selector: 'node.s1',
+          style: {
+            'height': 15,
+            'width': 15,
+            'text-margin-y': '4px',
+            'text-outline-width': 1,
+            'label': 'data(label)',
+            'font-size': '12px'
+          }
+        },
+        {
+          selector: 'node.s11',
+          style: {
+            'height': 15,
+            'width': 15,
+            'text-margin-y': '4px',
+            'text-outline-width': 1,
+            'label': 'data(label)',
+            'font-size': '10px'
+          }
+        },
+        {
+          selector: 'node.s1-rect',
+          style: {
+            'height': 15,
+            'width': 15,
+            'text-margin-y': '4px',
+            'text-outline-width': 1,
+            'label': 'data(label)',
+            'font-size': '12px',
+            'shape': 'rectangle',
+          }
+        },
+        {
+          selector: 'node.s11-rect',
+          style: {
+            'height': 15,
+            'width': 15,
+            'text-margin-y': '4px',
+            'text-outline-width': 1,
+            'label': 'data(label)',
+            'font-size': '10px',
+            'shape': 'rectangle',
+          }
+        },
+        {
+          selector: '$node > node',
+          css: {
+            'padding-top': '10px',
+            'padding-left': '1px',
+            'padding-bottom': '1px',
+            'padding-right': '1px',
+            'text-valign': 'top',
+            'text-halign': 'center',
+            'background-color': '#ddd',
+            'border-width': 0
           }
         },
         {
           selector: 'edge',
           style: {
-            'target-arrow-shape': 'triangle'
+            'target-arrow-shape': 'triangle',
+            'curve-style': 'bezier',
+            'width': '2px'
+          }
+        },
+        {
+          selector: 'edge.bidirected',
+          style: {
+            'target-arrow-shape': 'triangle',
+            'source-arrow-shape': 'triangle',
+            'curve-style': 'bezier'
           }
         },
         {
@@ -110,11 +191,35 @@
 
       elements: [
 
-        { data: { id: 'ws', label: 'HTTP INTER' }, position: { x: 174, y: 284 } },
-        { data: { id: 'ibk1', label: 'IBK 1' },    position: { x: 355, y: 231 } },
-        { data: { id: 'ibk2', label: 'IBK 2' },    position: { x: 355, y: 322 } },
-        { data: { id: 'ws-ibk1', source: 'ws', target: 'ibk1' }, classes: 'unbundled-bezier2' },
-        { data: { id: 'ws-ibk2', source: 'ws', target: 'ibk2' }, classes: 'unbundled-bezier1' },
+        { data: { id: 'wsinter', label: 'WS INTER' }, position: { x: 20, y: 96 } },
+        { data: { id: 'ro', label: '' }, position: { x: 90, y: 100 } },
+        { data: { id: 'appsrv1', label: 'AS 1', parent: 'ro' },    position: { x: 100, y: 50 }, classes: 's11' },
+        { data: { id: 'appsrv2', label: 'AS 2', parent: 'ro' },    position: { x: 100, y: 150 }, classes: 's11' },
+        { data: { id: 'wsinter-appsrv1', source: 'wsinter', target: 'appsrv1' }, classes: 'unbundled-bezier2' },
+        { data: { id: 'wsinter-appsrv2', source: 'wsinter', target: 'appsrv2' }, classes: 'unbundled-bezier1' },
+
+        { data: { id: 'mid', label: '' } },
+        { data: { id: 'mid.http', label: 'Conn.', parent: 'mid' }, position: { x: 210, y: 60 }, classes: 's11' },
+        { data: { id: 'appsrv1-mid', source: 'appsrv1', target: 'mid.http' }, classes: 'unbundled-bezier2' },
+        { data: { id: 'appsrv2-mid', source: 'appsrv2', target: 'mid.http' }, classes: 'unbundled-bezier2' },
+
+        { data: { id: 'cbs', label: 'cbs' } },
+        { data: { id: 'cbs.db', label: 'DB', parent: 'cbs' }, position: { x: 310, y: 10 }, classes: 's11' },
+        { data: { id: 'cbs.dq',  label: 'DQ',  parent: 'cbs' }, position: { x: 310, y: 50 }, classes: 's11-rect' },
+
+        { data: { id: 'appsrv1-mid', source: 'appsrv1', target: 'mid' }, classes: 'unbundled-bezier2' },
+        { data: { id: 'appsrv2-mid', source: 'appsrv2', target: 'mid' }, classes: 'unbundled-bezier2' },
+
+        { data: { id: 'mid-cbs.db', source: 'mid', target: 'cbs.db' }, classes: 'unbundled-bezier2' },
+        { data: { id: 'mid-cbs.dq',  source: 'mid', target: 'cbs.dq' }, classes: 'unbundled-bezier1' },
+
+        { data: { id: 'wsintra', label: 'WS INTRA' }, position: { x: 210, y: 140 } },
+        { data: { id: 'appsrv1-wsintra', source: 'appsrv1', target: 'wsintra' }, classes: 'unbundled-bezier2' },
+        { data: { id: 'appsrv2-wsintra', source: 'appsrv2', target: 'wsintra' }, classes: 'unbundled-bezier1' },
+
+        { data: { id: 'pps', label: 'Pay PS' }, position: { x: 310, y: 150 } },
+        { data: { id: 'wsintra-pps', source: 'wsintra', target: 'pps', classes: 'directed' } },
+
       ]
     });
 
